@@ -16,12 +16,25 @@ def parse_one_page(html):
         '<li.*?blue-link".*?>(.*?)</a>.*?title".*?href="(.*?)">(.*?)</a>.*?abstract">(.*?)</p>.*?ic-list-read">.*?</i>(.*?)</a>.*?ic-list-comments.*?</i>(.*?)</a>.*?ic-list-like.*?</i>(.*?)</span>.*?ic-list-money.*?</i>(.*?)</span>.*?</li>',
         re.S)
     items=re.findall(pattern,html)
-    print(items)
+    #print(items)
+
+    for item in items:
+        yield {
+            'author':item[0],
+            'link':item[1],
+            'title':item[2],
+            'abstract':item[3].strip(),
+            'read-num':item[4].strip(),
+            'comment-num':item[5].strip(),
+            'like-num':item[6],
+            'money-num':item[7]
+        }
 
 def main():
     url = 'http://www.jianshu.com/trending/monthly?utm_medium=index-banner-s&utm_source=desktop'
     html = get_one_page(url)
-    parse_one_page(html)
+    for item in parse_one_page(html):
+        print(item)
 
 
 if __name__=='__main__':
