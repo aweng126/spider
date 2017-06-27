@@ -3,6 +3,7 @@ import json
 import requests
 from requests.exceptions import RequestException
 import re
+from multiprocessing import Pool
 
 def get_one_page(url):
    try:
@@ -15,7 +16,8 @@ def get_one_page(url):
 
 def parse_one_page(html):
     pattern = re.compile(
-        '<li.*?blue-link".*?>(.*?)</a>.*?title".*?href="(.*?)">(.*?)</a>.*?abstract">(.*?)</p>.*?ic-list-read">.*?</i>(.*?)</a>.*?ic-list-comments.*?</i>(.*?)</a>.*?ic-list-like.*?</i>(.*?)</span>.*?ic-list-money.*?</i>(.*?)</span>.*?</li>',
+        '<li.*?blue-link".*?>(.*?)</a>.*?title".*?href="(.*?)">(.*?)</a>.*?abstract">(.*?)</p>.*?ic-list-read">.*?'
+        +'</i>(.*?)</a>.*?ic-list-comments.*?</i>(.*?)</a>.*?ic-list-like.*?</i>(.*?)</span>.*?ic-list-money.*?</i>(.*?)</span>.*?</li>',
         re.S)
     items=re.findall(pattern,html)
 
