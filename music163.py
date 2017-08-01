@@ -1,5 +1,6 @@
 #目的在于爬取网易云所有歌手的信息
 import requests
+from bs4 import BeautifulSoup
 
 music_url = 'https://music.163.com/#/discover/artist/cat'
 
@@ -18,17 +19,25 @@ music_headers = {
 
 def get_content(murl,mheaders):
     content = requests.get(murl,headers=mheaders)
-    return content
+    print('content type',type(content))
+    print('content text type',type(content.text))
+    return content.text
 
-def deal_content():
-    pass
+def deal_content(mcontent):
+    # 网页解析
+    soup = BeautifulSoup(mcontent,'html.parser')
+    body = soup.body
+    return body
 
 def save_content():
     pass
 
 def main():
+    #得到网页源码
     content = get_content(music_url,music_headers)
-    print(content.text)
+    #处理网页源码
+    singers_list = deal_content(content)
+    # print(singers_list)
 
 if __name__=='__main__':
     main()
